@@ -289,3 +289,4 @@ const AddPolice = () => {
 };
 
 export default AddPolice;
+

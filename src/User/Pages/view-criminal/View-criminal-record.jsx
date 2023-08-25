@@ -94,8 +94,8 @@ const ViewCriminal = () => {
 
         <tbody>
           {filteredCriminalRecords.map((record) => (
-            <tr key={record.id}>
-              <td>{record.id}</td>
+            <tr key={record.ID}>
+              <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
               <td>{record.firstname}</td>
               <td>{record.lastname}</td>

@@ -1,15 +1,17 @@
 
 import React, { useState } from 'react';
-import Finger from '../../../assets/fingerprint.png';
-import Capture from '../../../assets/capture.png';
 
 const AddCriminal = () => {
+  const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+
   const [formData, setFormData] = useState({
+    // Initialize all your form data fields here
     firstname: '',
     age: '',
     Contactfirstname: '',
-    Contactlastname : '',
-    Contactmiddlename : '',
+    Contactlastname: '',
+    Contactmiddlename: '',
     contactaddress: '',
     middlename: '',
     maritalStatus: '',
@@ -22,7 +24,7 @@ const AddCriminal = () => {
     contactLine: '',
     lastname: '',
     crime: '',
-    address :'',
+    address: '',
     DOB: '',
     occupation: '',
     gender: '',
@@ -34,19 +36,15 @@ const AddCriminal = () => {
     state: '',
     status: '',
     height: '',
-    reportedBy:'',
+    reportedBy: '',
     bloodGroup: '',
     weight: '',
     eyecolor: '',
     haircolor: '',
-    frequency: '', // Add the missing frequency property
+    frequency: '',
+    fingerPrints: null,
+    image: null,
   });
-
-  const [fingerPrintImage, setFingerPrintImage] = useState(null);
-  const [captureImage, setCaptureImage] = useState(null);
-
-  const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,44 +54,38 @@ const AddCriminal = () => {
     }));
   };
 
+  const handleImageChange = (e, type) => {
+    const selectedImage = e.target.files[0];
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [type]: selectedImage,
+    }));
+  };
+
   const postFormData = async () => {
     try {
+      const form = new FormData();
+  
+      // Append form data fields to FormData
+      for (const key in formData) {
+        if (formData[key]) {
+          form.append(key, formData[key]);
+        }
+      }
+  
       const response = await fetch('https://crime-xrrp.onrender.com/officers/addcriminal', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: form,
       });
-
+  
       const data = await response.json();
+      console.log('API Response:', data); // Add this line
       return data;
     } catch (error) {
       throw error;
     }
   };
-
-  const uploadImages = async () => {
-    const formDataWithImages = new FormData();
-    formDataWithImages.append('fingerPrints', fingerPrintImage);
-    formDataWithImages.append('image', captureImage);
-    // Append other form data
-    for (const key in formData) {
-      formDataWithImages.append(key, formData[key]);
-    }
-
-    try {
-      const response = await fetch('https://crime-xrrp.onrender.com/officers/addcriminal', {
-        method: 'POST',
-        body: formDataWithImages,
-      });
-
-      const responseData = await response.json();
-      console.log('Images uploaded successfully:', responseData);
-    } catch (error) {
-      console.error('Error uploading images:', error);
-    }
-  };
+  
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -105,8 +97,6 @@ const AddCriminal = () => {
         console.log('Data posted successfully:', data);
         setSuccessPopupOpen(true);
         setErrorPopupOpen(false);
-
-        await uploadImages();
 
         // Reset form fields except for frequency, which was missing in the initial state
         setFormData({
@@ -146,10 +136,10 @@ const AddCriminal = () => {
           eyecolor: '',
           haircolor: '',
           frequency: '',
+          fingerPrints: null,
+          image: null,
         });
 
-        setFingerPrintImage(null);
-        setCaptureImage(null);
         console.log(setFormData);
       } else {
         setErrorPopupOpen(true);
@@ -172,9 +162,8 @@ const AddCriminal = () => {
 
   return (
     <div className='criminal-record'>
-      <p className='add-text'>Add a New Criminal record</p>
       <form className='add-container' onSubmit={handleFormSubmit}>
-        <div className='add-box'>
+      <div className='add-box'>
           <ul style={{marginBottom: '3rem'}}>
             <h3>Criminal's Details</h3>
           </ul>
@@ -359,37 +348,41 @@ const AddCriminal = () => {
             <p>Relationship</p>
             <input type='text' name='contactRelationship' onChange={handleInputChange} value={formData.contactRelationship} />
           </ul>
-          
-          {/* Finger Print */}
-          <ul className='biometric'>
-            <p>Finger Print</p>
-            <input
-              type='file'
-              accept='image/*'
-              onChange={(e) => setFingerPrintImage(e.target.files[0])}
-            />
-            {fingerPrintImage && (
-              <img src={URL.createObjectURL(fingerPrintImage)} alt='' />
-            )}
-          </ul>
 
-          {/* Capture */}
-          <ul className='biometric'>
-            <p>Capture</p>
-            <input
-              type='file'
-              accept='image/*'
-              onChange={(e) => setCaptureImage(e.target.files[0])}
-            />
-            {captureImage && (
-              <img src={URL.createObjectURL(captureImage)} alt='' />
-            )}
-          </ul>
+        {/* Finger Print */}
+        <ul className='biometric'>
+          <p>Finger Print</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'fingerPrints')}
+          />
+          {/* Display the selected image */}
+          {formData.fingerPrints && (
+            <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
+          )}
+        </ul>
+
+        {/* Capture */}
+        <ul className='biometric'>
+          <p>Capture</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'image')}
+          />
+          {/* Display the selected image */}
+          {formData.image && (
+            <img src={URL.createObjectURL(formData.image)} alt='' />
+          )}
+        </ul>
         </div>
 
-        <button type='submit' className='addBtn'>Add Record</button>
+        {/* ...submit button and popups */}
+        <button type='submit' className='addBtn'>
+          Add Record
+        </button>
       </form>
-      
       {isSuccessPopupOpen && (
         <div className='popup'>
           <div className='popup-content'>
@@ -408,7 +401,6 @@ const AddCriminal = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };

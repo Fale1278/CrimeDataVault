@@ -134,3 +134,4 @@ const ViewCriminal = () => {
 
 
 export default ViewCriminal;
+
