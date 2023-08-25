@@ -1,55 +1,82 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 
-import Police2 from '../../../assets/police2.png'
-import Jesse from '../../../assets/jesse.png'
-import Contact from '../../../assets/contact.svg'
-import Finger from '../../../assets/fingerprint.png'
+
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import Police2 from '../../../assets/police2.png';
+import Contact from '../../../assets/contact.svg';
+import Finger from '../../../assets/fingerprint.png';
+
 const PoliceProfile = () => {
+  const [policeOfficer, setPoliceOfficer] = useState(true);
+  const { _id } = useParams();
+
+  useEffect(() => {
+    // Fetch the police officer's details for the specific ID from the backend API
+    const fetchPoliceOfficerDetails = async () => {
+      try {
+        const response = await fetch(`https://crime-xrrp.onrender.com/admin/officer/${_id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPoliceOfficer(data);
+        } else {
+          console.error('Error fetching police officer details:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching police officer details:', error);
+      }
+    };
+    fetchPoliceOfficerDetails();  
+  }, []);
+
+  if (!policeOfficer) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className='police-profile'>
       <div className='pol'>
-     
-            
-          <div>
-            <img src={Police2} alt="" /><span>Police Details</span>
-          </div>
-
-          <div className='back'><Link to='/policeRecord' className='back'><i class='bx bx-left-arrow-alt'></i>Back</Link></div>
-        
+        <div>
+          <img src={Police2} alt="" /><span>Police Details</span>
+        </div>
+        <div className='back'>
+          <Link to='/policeRecord' className='back'>
+            <i className='bx bx-left-arrow-alt'></i>Back
+          </Link>
+        </div>
       </div>
 
       <div className="police-details-container">
         <div className="police-details">
           <div className="police-details-box">
             <div className="kiri-kiri">
-              <h1>Jesse Kanadi</h1>
+              <h1>{policeOfficer.firstName} {policeOfficer.lastName}</h1>
             </div>
             <div className="external">
-              <img src={Jesse} alt="" />
+              <img src={policeOfficer.image} alt="" />
             </div>
           </div>
         </div>
 
         <div className="police-details2">
           <div className="police-details2-box">
-            <h1><i class='bx bxs-user'></i><span>Personal Details</span></h1>
+            <h1><i className='bx bxs-user'></i><span>Personal Details</span></h1>
           </div>
-
           <div className="external2">
-            <p><b>First Name: </b> Jesse</p>
-            <p><b>Middle Name: </b>Jesse</p>
-            <p><b>Last Name: </b> Kanadi</p>
-            <p><b>Age: </b> 21</p>
-            <p><b>Sex: </b> Male</p>
-            <p><b>Nationality: </b> Nigerian</p>
-            <p><b>State: </b> Borno</p>
-            <p><b>LGA: </b> Hawul</p>
-            <p><b>Blood Group: </b> B+</p>
-            <p><b>Height: </b> 178 CM</p>
-            <p><b>Rank: </b> Sergeant</p>
-            <p><b>Marital Status: </b> Single</p>
-            <p><b>Address: </b> GGSS</p>
+            <p><b>First Name: </b>{policeOfficer.firstName}</p>
+            <p><b>Middle Name: </b>{policeOfficer.middleName}</p>
+            <p><b>Last Name: </b>{policeOfficer.lastName}</p>
+            <p><b>Date Of Birth: </b> {policeOfficer.DOB}</p>
+            <p><b>Age: </b>{policeOfficer.age}</p>
+            <p><b>Sex: </b>{policeOfficer.gender}</p>
+            <p><b>Nationality: </b>{policeOfficer.nationality}</p>
+            
+            <p><b>State: </b> {policeOfficer.state}</p>
+            <p><b>LGA: </b> {policeOfficer.lga}</p>
+            <p><b>Town: </b> {policeOfficer.town}</p>
+            <p><b>Address: </b> {policeOfficer.address}</p>
+            <p><b>Blood Group: {policeOfficer.bloodGroup}</b> </p>
+            <p><b>Height: </b> {policeOfficer.height}</p>
+            <p><b>Marital Status: </b> {policeOfficer.maritalStatus}</p>
           </div>
         </div>
 
@@ -59,9 +86,12 @@ const PoliceProfile = () => {
           </div>
 
           <div className="external2">
-            <p><b>Contact Line: </b> 09123173100</p>
-            <p><b>Address: </b> Behind Toro Government Secondary School Toro</p>
-            <p><b>Next of Kin: </b> Musa Gyang</p>
+            <p><b>Email: </b> {policeOfficer.email}</p>
+            <p><b>Contact Line: </b> {policeOfficer.contactLine}</p>
+            <p><b>Address: </b> {policeOfficer.address}</p>
+            <p><b>Next of Kin: </b> {policeOfficer.nextOfKin}</p>
+            <p><b>Next of Address: </b> {policeOfficer.nextOfAddress}</p>
+            <p><b>Next of Contact: </b> {policeOfficer.nextOfContact}</p>
           </div>
         </div>
 
@@ -71,14 +101,15 @@ const PoliceProfile = () => {
           </div>
 
           <div className="external2">
-            <p><b>Police ID: </b> NPF123456</p>
-            <p><b>Appointment Date: </b>10-02-2022</p>
-            <p><b>Current Station: </b> Anglo Jos Station</p>
+            <p><b>Rank: </b> {policeOfficer.rank}</p>
+            <p><b>Police ID: </b> {policeOfficer.policeId}</p>
+            <p><b>Appointment Date: </b> {policeOfficer.appointmentDate}</p>
+            <p><b>Current Station: </b> {policeOfficer.currentStation}</p>
           </div>
         </div> 
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PoliceProfile
+export default PoliceProfile;

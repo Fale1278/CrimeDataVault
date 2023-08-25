@@ -83,7 +83,7 @@ const AddCriminal = () => {
     }
 
     try {
-      const response = await fetch('https://crime-vault-database.onrender.com/officers/addcriminal', {
+      const response = await fetch('https://crime-xrrp.onrender.com/officers/addcriminal', {
         method: 'POST',
         body: formDataWithImages,
       });
