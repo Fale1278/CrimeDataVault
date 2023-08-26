@@ -103,7 +103,7 @@ const ViewCriminal = () => {
               <td>{record.crime}</td>
               <td>{record.dateCommitted}</td>
               <td>{record.status}</td>
-              <td><Link to={`/criminalProfile/${record.id}`}><img src={Eye2} alt="" /></Link></td>
+              <td><Link to={`/criminalProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
               <td>{record.sentence}</td>
             </tr>
           ))}

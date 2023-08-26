@@ -1,9 +1,17 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const AddCriminal = () => {
+  const [isLoading, setIsLoading] = useState(true)
+
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 3000)
+  },[])
 
   const [formData, setFormData] = useState({
     // Initialize all your form data fields here
@@ -162,7 +170,12 @@ const AddCriminal = () => {
 
   return (
     <div className='criminal-record'>
-      <form className='add-container' onSubmit={handleFormSubmit}>
+     <div>
+      {isLoading? (
+        <PreLoader2 />
+      ): (
+        <div>
+           <form className='add-container' onSubmit={handleFormSubmit}>
       <div className='add-box'>
           <ul style={{marginBottom: '3rem'}}>
             <h3>Criminal's Details</h3>
@@ -401,8 +414,23 @@ const AddCriminal = () => {
           </div>
         </div>
       )}
+        </div>
+      )}
+     </div>
     </div>
   );
 };
+
+const PreLoader2 = () => {
+  return (
+    <div className='preLoader2'>
+      <div className="dot-container2">
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+      </div>
+    </div>
+  )
+}
 
 export default AddCriminal;

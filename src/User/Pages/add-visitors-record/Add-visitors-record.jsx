@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Finger from '../../../assets/fingerprint.png';
 import Capture from '../../../assets/capture.png';
+import PreLoader from '../PreLoader/PreLoader';
 
 const AddVisitor = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [formData, setFormData] = useState({
     Age:'',
     correctionalCenter:'',
@@ -35,6 +37,12 @@ const AddVisitor = () => {
 
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    },3000)
+  },[])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -123,7 +131,11 @@ const AddVisitor = () => {
 
   return (
     <div className='criminal-record'>
-      <p className='add-text'>Add a New Visitor record</p>
+      {isLoading? (
+        <PreLoader2 />
+      ): (
+        <div>
+          <p className='add-text'>Add a New Visitor record</p>
       <form className='add-container' onSubmit={handleFormSubmit}>
         <div className='add-box'>
           <ul style={{marginBottom: '3rem'}}>
@@ -318,8 +330,22 @@ const AddVisitor = () => {
           </div>
         </div>
       )}
+        </div>
+      )}
     </div>
   );
 };
+
+const PreLoader2 = () => {
+  return (
+    <div className='preLoader2'>
+      <div className="dot-container2">
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+      </div>
+    </div>
+  )
+}
 
 export default AddVisitor;

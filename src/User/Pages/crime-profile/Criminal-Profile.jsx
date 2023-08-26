@@ -5,16 +5,24 @@ import { Link, useParams } from 'react-router-dom';
 import Leo from '../../../assets/leo.png';
 import Contact from '../../../assets/contact.svg';
 import Finger from '../../../assets/fingerprint.png';
+import PreLoader from '../PreLoader/PreLoader';
 
 const CriminalProfile = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [criminalRecord, setCriminalRecord] = useState(null);
-  const { id } = useParams();
+  const { _id } = useParams();
+
+  useEffect(()=> {
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 3000)
+  },[])
 
   useEffect(() => {
     // Fetch the criminal record for the specific id from the backend API
     const fetchCriminalRecord = async () => {
       try {
-        const response = await fetch(`https://crime-xrrp.onrender.com/officers/criminals/${id}`);
+        const response = await fetch(`https://crime-xrrp.onrender.com/officers/${_id}`);
         if (response.ok) {
           const data = await response.json();
           setCriminalRecord(data);
@@ -26,7 +34,7 @@ const CriminalProfile = () => {
       }
     };
     fetchCriminalRecord();
-  }, [id]);
+  }, []);
 
   if (!criminalRecord) {
     return <div style={{marginRight: '18rem'}}>Loading...</div>;
@@ -34,7 +42,12 @@ const CriminalProfile = () => {
 
   return (
     <div className='police-profile'>
-      <div className='pol'>
+      <div>
+        {isLoading? (
+          <PreLoader />
+        ):(
+          <div>
+            <div className='pol'>
         <div>
           <img src={Finger} alt="" /><span> Criminal Details</span>
         </div>
@@ -50,7 +63,7 @@ const CriminalProfile = () => {
         <div className="police-details">
           <div className="police-details-box">
             <div className="kiri-kiri">
-              <span>#Kiri-kiri prison inmate</span>
+              <span>#{criminalRecord.correctionalCenter}</span>
               <h1>{criminalRecord.name}</h1>
             </div>
             <div className="external">
@@ -102,7 +115,7 @@ const CriminalProfile = () => {
             <p><b>Crime: </b>{criminalRecord.crime}</p>
             <p><b>Date Committed: </b>{criminalRecord.dateCommitted}</p>
             <p><b>Date Convicted: </b>{criminalRecord.dateConvicted}</p>
-            <p><b>Correctional Centre: </b>{criminalRecord.correctionalCentre}</p>
+            <p><b>Correctional Centre: </b>{criminalRecord.correctionalCenter}</p>
             <p><b>Sentence: </b>{criminalRecord.sentence}</p>
           </div>
         </div>
@@ -111,6 +124,9 @@ const CriminalProfile = () => {
       <button className='update'>
         <Link to='/updateCriminal' className='link'>Update Record</Link>
       </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
