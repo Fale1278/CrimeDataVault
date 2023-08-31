@@ -51,7 +51,7 @@ export default function App() {
           ) : (
             <Routes>
               {/* Login route */}
-              <Route path="/" element={<LoginPage />} />
+              <Route index element={<LoginPage />} />
               <Route path='/user' element={<UserDashboard />}/>
               <Route path='/admin' element={<AdminDashboard />}/>
 

@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Finger from '../../../assets/fingerprint.png';
-import Capture from '../../../assets/capture.png';
-import PreLoader from '../PreLoader/PreLoader';
 
 const AddVisitor = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +21,6 @@ const AddVisitor = () => {
     height:'',
     visitorAddress:'',
     eyecolor:'',
-    visitorAddress:'',
     weight:'',
     relationshipWithInmate:'',
     Frequency:'',
@@ -33,6 +29,8 @@ const AddVisitor = () => {
     inmateVisited:'',
     LGA:'',
     haircolor:'',
+    fingerPrints:null,
+    image:null,
   });
 
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -52,22 +50,35 @@ const AddVisitor = () => {
     });
   };
 
-  const postFormData = async () => {
-    try {
-      const response = await fetch('https://crime-xrrp.onrender.com/officers/addvisitor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+  const handleImageChange = (e, type) =>{
+    const selectedImage = e.target.files[0]
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [type]: selectedImage,
+    }))
+  }
 
+  const postFormData = async () => {
+    try{
+      const form = new FormData();
+
+      for (const key in formData) {
+        if(formData[key]){
+          form.append(key, formData[key]);
+        }
+      }
+      const response = await fetch ('https://crime-xrrp.onrender.com/officers/addVisitor', {
+        method: 'POST',
+        body:form,
+      });
+      
       const data = await response.json();
+      console.log('API Response:', data)
       return data;
-    } catch (error) {
+    }catch(error){
       throw error;
     }
-  };
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +92,7 @@ const AddVisitor = () => {
         setErrorPopupOpen(false);
         // Optionally, you can reset the form after successful submission
         setFormData({
+          ...formData,
           Age:'',
           correctionalCenter:'',
           Nationality:'',
@@ -99,7 +111,6 @@ const AddVisitor = () => {
           height:'',
           visitorAddress:'',
           eyecolor:'',
-          visitorAddress:'',
           weight:'',
           relationshipWithInmate:'',
           Frequency:'',
@@ -108,7 +119,11 @@ const AddVisitor = () => {
           inmateVisited:'',
           LGA:'',
           haircolor:'',
+          fingerPrints:null,
+          image:null,
         });
+
+        console.log(setFormData)
       } else {
         setErrorPopupOpen(true);
         setSuccessPopupOpen(false);
@@ -139,7 +154,7 @@ const AddVisitor = () => {
       <form className='add-container' onSubmit={handleFormSubmit}>
         <div className='add-box'>
           <ul style={{marginBottom: '3rem'}}>
-            <h3>Criminal's Details</h3>
+            <h3>Visitor's Details</h3>
           </ul>
 
           <ul>
@@ -190,11 +205,6 @@ const AddVisitor = () => {
           <ul>
             <p>Town</p>
             <input type='text' name='town' onChange={handleInputChange} value={formData.town} />
-          </ul>
-
-          <ul>
-            <p>Address</p>
-            <input type='text' name='visitorAddress' onChange={handleInputChange} value={formData.visitorAddress} />
           </ul>
 
           <ul>
@@ -289,22 +299,32 @@ const AddVisitor = () => {
             <input type='text' name='Frequency' onChange={handleInputChange} value={formData.Frequency} />
           </ul>
 
+              {/* Finger Print */}
           <ul className='biometric'>
-            <p>Biometric Capture</p>
+            <p>Finger Print</p>
+            <input
+              type='file'
+              accept='image/*'
+              onChange={(e) => handleImageChange(e, 'fingerPrints')}
+            />
+            {/* Display the selected image */}
+            {formData.fingerPrints && (
+              <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
+            )}
+          </ul>
 
-            <div className='finger-capture'>
-              <ul>
-                <p>Finger Print</p>
-                <img src={Finger} alt='' />
-                {/* <input type='text' name='fingerPrints' onChange={handleInputChange} value={formData.fingerPrints} /> */}
-              </ul>
-
-              <ul>
-                <p>Capture</p>
-                <img src={Capture} alt='' />
-                {/* <input type='file' name='facialCapture' onChange={handleInputChange} value={formData.facialCapture} /> */}
-              </ul>
-            </div>
+          {/* Capture */}
+          <ul className='biometric'>
+            <p>Capture</p>
+            <input
+              type='file'
+              accept='image/*'
+              onChange={(e) => handleImageChange(e, 'image')}
+            />
+            {/* Display the selected image */}
+            {formData.image && (
+              <img src={URL.createObjectURL(formData.image)} alt='' />
+            )}
           </ul>
         </div>
 

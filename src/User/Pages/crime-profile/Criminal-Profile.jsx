@@ -67,7 +67,7 @@ const CriminalProfile = () => {
               <h1>{criminalRecord.name}</h1>
             </div>
             <div className="external">
-              <img src={Leo} alt="" />
+              <img src={criminalRecord.image} alt="" />
             </div>
           </div>
         </div>

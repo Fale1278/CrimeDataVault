@@ -1,6 +1,5 @@
 import React from 'react'
 import Visitor from '../../../assets/visitors.svg'
-import Desmond from '../../../assets/desmond.png'
 import Eye2 from '../../../assets/eye2.png'
 
 import { useState, useEffect } from 'react'
@@ -90,15 +89,15 @@ const ViewVisitors = () => {
 
         <tbody>
         {filteredVisitorRecord.map((record) => (
-            <tr key={record.id}>
-              <td>{record.id}</td>
+            <tr key={record.ID}>
+              <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{width: '2rem'}}/></td>
               <td>{record.firstname}</td>
               <td>{record.lastname}</td>
               <td>{record.gender}</td>
-              <td>{record.crime}</td>
-              <td>{record.dateCommitted}</td>
-              <td><Link to='/criminalProfile'><img src={Eye2} alt="" /></Link></td>
+              <td>{record.inmateVisited}</td>
+              <td>{record.relationshipWithInmate}</td>
+              <td><Link to={`/visitorProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
             </tr>
           ))}
         </tbody>

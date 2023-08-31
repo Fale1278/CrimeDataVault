@@ -44,6 +44,7 @@ const ViewCriminal = () => {
     setSearchQuery(query);
   };
 
+
   return (
     <div className='view-record'>
       <div className="view-records-container">
@@ -93,7 +94,7 @@ const ViewCriminal = () => {
         </thead>
 
         <tbody>
-          {filteredCriminalRecords.map((record) => (
+          {filteredCriminalRecords.length > 0 ? filteredCriminalRecords.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
@@ -106,7 +107,7 @@ const ViewCriminal = () => {
               <td><Link to={`/criminalProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
               <td>{record.sentence}</td>
             </tr>
-          ))}
+          )): <PreLoader2 />}
         </tbody>
       </table>
 
@@ -116,5 +117,17 @@ const ViewCriminal = () => {
     </div>
   );
 };
+
+const PreLoader2 = () => {
+  return (
+    <div className='preLoader2'>
+      <div className="dot-container2">
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+      </div>
+    </div>
+  )
+}
 
 export default ViewCriminal;
