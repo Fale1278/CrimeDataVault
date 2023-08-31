@@ -5,6 +5,7 @@ import Eye2 from '../../../assets/eye2.png'
 import { useState, useEffect } from 'react'
 
 import { Link } from 'react-router-dom'
+import PreLoader from '../../../User/Pages/PreLoader/PreLoader'
 
 
 const ViewVisitors = () => {
@@ -36,8 +37,7 @@ const ViewVisitors = () => {
     const filteredRecords = visitorRecords.filter(
       (record) =>
         record.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.lastname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.crime.toLowerCase().includes(searchQuery.toLowerCase())
+        record.lastname.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
     setFilteredVisitorRecord(filteredRecords);
   }, [searchQuery, visitorRecords]);
@@ -46,6 +46,7 @@ const ViewVisitors = () => {
     const query = e.target.value;
     setSearchQuery(query);
   };
+
   return (
     <div className='view-record'>
       <div className="view-records-container">
@@ -71,7 +72,10 @@ const ViewVisitors = () => {
 
         <div className="entries2">
           <p><i class='bx bxs-filter-alt'></i>Filter Record</p>
-          <ul><span>Search: </span><input type="text" /></ul>
+          <ul>
+            <span>Search: </span>
+            <input type="text" value={searchQuery} onChange={handleSearchChange}/>
+          </ul>
         </div>
       </div>
 
@@ -88,7 +92,7 @@ const ViewVisitors = () => {
         </thead>
 
         <tbody>
-        {filteredVisitorRecord.map((record) => (
+        {filteredVisitorRecord.length > -1 ?  filteredVisitorRecord.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{width: '2rem'}}/></td>
@@ -99,7 +103,7 @@ const ViewVisitors = () => {
               <td>{record.relationshipWithInmate}</td>
               <td><Link to={`/visitorProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
             </tr>
-          ))}
+          )): <PreLoader />}
         </tbody>
       </table>
 
