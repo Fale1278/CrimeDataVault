@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Finger from '../../../assets/fingerprint.png';
 import Capture from '../../../assets/capture.png';
 
-const AddPolice = () => {
+const AddPolice = () => { 
   const initialFormData = {
     firstName: '',
     lastName: '',
@@ -35,6 +35,14 @@ const AddPolice = () => {
   const [formData, setFormData] = useState({ ...initialFormData });
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
+
+
+  useEffect(()=>{
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000);
+  },[])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +54,14 @@ const AddPolice = () => {
 
   const postFormData = async () => {
     try {
+      const form = new FormData()
+
+      for (const key in formData){
+        if(formData[key]){
+          form.append(key, formData[key])
+        }
+      }
+
       const response = await fetch('https://crime-xrrp.onrender.com/admin/officerSignup', {
         method: 'POST',
         headers: {
@@ -93,7 +109,12 @@ const AddPolice = () => {
 
   return (
     <div className='criminal-record'>
-      <p className='add-text'>Register a New Police</p>
+      <div>
+        {isLoading? (
+          <PreLoader2 />
+        ): (
+          <div>
+             <p className='add-text'>Register a New Police</p>
       <form className='add-container' onSubmit={handleFormSubmit}>
         <div className='add-box'>
           <ul style={{marginBottom: '3rem'}}>
@@ -284,9 +305,25 @@ const AddPolice = () => {
           </div>
         </div>
       )}
+
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
+const PreLoader2 = () => {
+  return (
+    <div className='preLoader2'>
+      <div className="dot-container2">
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+      </div>
+    </div>
+  )
+}
 
 export default AddPolice;
 

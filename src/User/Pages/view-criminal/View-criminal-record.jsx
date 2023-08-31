@@ -80,7 +80,7 @@ const ViewCriminal = () => {
       <table>
         <thead className='thead'>
           <tr>
-            <th>ID</th>
+            <th >ID</th>
             <th>IMAGE</th>
             <th>FIRST NAME</th>
             <th>LAST NAME</th>
@@ -94,7 +94,7 @@ const ViewCriminal = () => {
         </thead>
 
         <tbody>
-          {filteredCriminalRecords.length > 0 ? filteredCriminalRecords.map((record) => (
+          {filteredCriminalRecords.length > -1 ? filteredCriminalRecords.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
