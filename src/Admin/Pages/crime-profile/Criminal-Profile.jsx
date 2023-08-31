@@ -1,17 +1,27 @@
+// CriminalProfile.js
+
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Leo from '../../../assets/leo.png';
 import Contact from '../../../assets/contact.svg';
 import Finger from '../../../assets/fingerprint.png';
+import PreLoader from '../../../User/Pages/PreLoader/PreLoader';
 
 const CriminalProfile = () => {
-  const [criminalRecord, setCriminalRecord] = useState(null);
-  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true)
+  const [criminalRecord, setCriminalRecord] = useState(true);
+  const { _id } = useParams();
+
+  useEffect(()=> {
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 3000)
+  },[])
 
   useEffect(() => {
+    // Fetch the criminal record for the specific id from the backend API
     const fetchCriminalRecord = async () => {
       try {
-        const response = await fetch(`https://crime-xrrp.onrender.com/officers/criminals/${criminal_id}`);
+        const response = await fetch(`https://crime-xrrp.onrender.com/officers/${_id}`);
         if (response.ok) {
           const data = await response.json();
           setCriminalRecord(data);
@@ -23,41 +33,44 @@ const CriminalProfile = () => {
       }
     };
     fetchCriminalRecord();
-  }, [id]);
+  }, []);
 
   if (!criminalRecord) {
-    return <div>Loading...</div>;
+    return <div style={{marginRight: '18rem'}}>Loading...</div>;
   }
 
   return (
     <div className='police-profile'>
-      <div className='pol'>
+      <div>
+        {isLoading? (
+          <PreLoader />
+        ):(
+          <div>
+            <div className='pol'>
         <div>
           <img src={Finger} alt="" /><span> Criminal Details</span>
         </div>
 
         <div className='back'>
           <Link to='/viewCriminal' className='back'>
-            <i className='bx bx-left-arrow-alt'></i><e>Back</e>
+            <i className='bx bx-left-arrow-alt'></i><e>Back</e >
           </Link>
         </div>
       </div>
 
       <div key={criminalRecord.id} className="police-details-container">
-        {/* Criminal Details */}
         <div className="police-details">
           <div className="police-details-box">
             <div className="kiri-kiri">
-              <span>#Kiri-kiri prison inmate</span>
+              <span>#{criminalRecord.correctionalCenter}</span>
               <h1>{criminalRecord.name}</h1>
             </div>
             <div className="external">
-              <img src={Leo} alt="" />
+              <img src={criminalRecord.image} alt="" />
             </div>
           </div>
         </div>
 
-        {/* Personal Details */}
         <div className="police-details2">
           <div className="police-details2-box">
             <h1><i className='bx bxs-user'></i><span>Personal Details</span></h1>
@@ -79,7 +92,6 @@ const CriminalProfile = () => {
           </div>
         </div>
 
-        {/* Emergency Contact */}
         <div className="police-details2">
           <div className="police-details2-box">
             <h1><img src={Contact} alt="" /><span>Emergency Contact</span></h1>
@@ -94,7 +106,6 @@ const CriminalProfile = () => {
           </div>
         </div>
 
-        {/* Crime Details */}
         <div className="police-details2">
           <div className="police-details2-box">
             <h1><img src={Finger} alt="" /><span>Crime Details</span></h1>
@@ -103,7 +114,7 @@ const CriminalProfile = () => {
             <p><b>Crime: </b>{criminalRecord.crime}</p>
             <p><b>Date Committed: </b>{criminalRecord.dateCommitted}</p>
             <p><b>Date Convicted: </b>{criminalRecord.dateConvicted}</p>
-            <p><b>Correctional Centre: </b>{criminalRecord.correctionalCentre}</p>
+            <p><b>Correctional Centre: </b>{criminalRecord.correctionalCenter}</p>
             <p><b>Sentence: </b>{criminalRecord.sentence}</p>
           </div>
         </div>
@@ -112,6 +123,9 @@ const CriminalProfile = () => {
       <button className='update'>
         <Link to='/updateCriminal' className='link'>Update Record</Link>
       </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
