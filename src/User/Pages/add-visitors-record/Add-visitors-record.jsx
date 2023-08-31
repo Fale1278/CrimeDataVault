@@ -299,33 +299,39 @@ const AddVisitor = () => {
             <input type='text' name='Frequency' onChange={handleInputChange} value={formData.Frequency} />
           </ul>
 
-              {/* Finger Print */}
           <ul className='biometric'>
-            <p>Finger Print</p>
-            <input
-              type='file'
-              accept='image/*'
-              onChange={(e) => handleImageChange(e, 'fingerPrints')}
-            />
-            {/* Display the selected image */}
-            {formData.fingerPrints && (
-              <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
-            )}
-          </ul>
+          <p>Finger Print</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'fingerPrints')}
+          />
+          {/* Display the selected image */}
+          {formData.fingerPrints && (
+            <div className='inputImage'>
 
-          {/* Capture */}
-          <ul className='biometric'>
-            <p>Capture</p>
-            <input
-              type='file'
-              accept='image/*'
-              onChange={(e) => handleImageChange(e, 'image')}
-            />
-            {/* Display the selected image */}
-            {formData.image && (
-              <img src={URL.createObjectURL(formData.image)} alt='' />
-            )}
-          </ul>
+              <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
+            </div>
+          )}
+        </ul>
+
+        {/* Capture */}
+        <ul className='biometric'>
+          <p>Capture</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'image')}
+          />
+          {/* Display the selected image */}
+          {formData.image && (
+            <div className="inputImage">
+              
+            <img src={URL.createObjectURL(formData.image)} alt='' />
+            </div>
+          )}
+        </ul>
+
         </div>
 
         <button type='submit' className='addBtn'>Add Record</button>

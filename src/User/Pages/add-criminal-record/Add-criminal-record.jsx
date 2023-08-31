@@ -328,6 +328,40 @@ const AddCriminal = () => {
             <input type='text' name='frequency' onChange={handleInputChange} value={formData.frequency} />
           </ul>
 
+          {/* Finger Print */}
+        <ul className='biometric'>
+          <p>Finger Print</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'fingerPrints')}
+          />
+          {/* Display the selected image */}
+          {formData.fingerPrints && (
+            <div className='inputImage'>
+
+              <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
+            </div>
+          )}
+        </ul>
+
+        {/* Capture */}
+        <ul className='biometric'>
+          <p>Capture</p>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageChange(e, 'image')}
+          />
+          {/* Display the selected image */}
+          {formData.image && (
+            <div className="inputImage">
+              
+            <img src={URL.createObjectURL(formData.image)} alt='' />
+            </div>
+          )}
+        </ul>
+
           <ul style={{marginTop: '3rem'}}>
             <h3>Emergency Contact</h3>
           </ul>
@@ -362,33 +396,7 @@ const AddCriminal = () => {
             <input type='text' name='contactRelationship' onChange={handleInputChange} value={formData.contactRelationship} />
           </ul>
 
-        {/* Finger Print */}
-        <ul className='biometric'>
-          <p>Finger Print</p>
-          <input
-            type='file'
-            accept='image/*'
-            onChange={(e) => handleImageChange(e, 'fingerPrints')}
-          />
-          {/* Display the selected image */}
-          {formData.fingerPrints && (
-            <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
-          )}
-        </ul>
-
-        {/* Capture */}
-        <ul className='biometric'>
-          <p>Capture</p>
-          <input
-            type='file'
-            accept='image/*'
-            onChange={(e) => handleImageChange(e, 'image')}
-          />
-          {/* Display the selected image */}
-          {formData.image && (
-            <img src={URL.createObjectURL(formData.image)} alt='' />
-          )}
-        </ul>
+        
         </div>
 
         {/* ...submit button and popups */}
