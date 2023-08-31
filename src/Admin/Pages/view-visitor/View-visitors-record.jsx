@@ -13,6 +13,13 @@ const ViewVisitors = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [visitorRecords, setVisitorRecord] = useState([]);
   const [filteredVisitorRecord, setFilteredVisitorRecord] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 2000)
+  },[])    
 
   useEffect(() => {
     // Fetch the criminal records from the backend API
@@ -49,7 +56,11 @@ const ViewVisitors = () => {
 
   return (
     <div className='view-record'>
-      <div className="view-records-container">
+      {isLoading ? (
+        <PreLoader />
+      ): (
+        <div>
+          <div className="view-records-container">
         <div className="entries">
           <p><img src={Visitor} alt="" /><span>Visitors Records</span></p>
           <p>Show 
@@ -109,6 +120,8 @@ const ViewVisitors = () => {
 
       <p className='skip'><span><i class='bx bx-skip-previous'></i></span> <span>Prev | Next </span> <span><i class='bx bx-skip-next'></i></span></p>
 
+        </div>
+      )}
     </div>
   )
 }

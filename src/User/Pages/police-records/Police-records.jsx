@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Finger from '../../../assets/fingerprint.png';
 import Eye2 from '../../../assets/eye2.png';
+import PreLoader from '../PreLoader/PreLoader';
 
 const PoliceRecords = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -90,7 +91,7 @@ const PoliceRecords = () => {
         </thead>
 
         <tbody>
-          {filteredPoliceRecords.map((record) => (
+          {filteredPoliceRecords.length < -1 ? filteredPoliceRecords.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
@@ -100,7 +101,7 @@ const PoliceRecords = () => {
               <td>{record.appointmentDate}</td>
               <td><Link to={`/policeProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
             </tr>
-          ))}
+          )): <PreLoader />}
         </tbody>
       </table>
 
