@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Finger from '../../../assets/fingerprint.png';
-import Capture from '../../../assets/capture.png';
 
 const AddPolice = () => { 
   const initialFormData = {
@@ -30,6 +28,8 @@ const AddPolice = () => {
     appointmentDate: '',
     currentStation: '',
     policeId: '',
+    fingerPrints: null,
+    image: null,
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -49,6 +49,14 @@ const AddPolice = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
+    }));
+  };
+
+  const handleImageChange = (e, type) => {
+    const selectedImage = e.target.files[0];
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [type]: selectedImage,
     }));
   };
 
@@ -263,23 +271,39 @@ const AddPolice = () => {
           </ul>
 
           
-          <ul className='biometric'>
-            <p>Biometric Capture</p>
+            {/* Finger Print */}
+            <ul className='biometric'>
+              <p>Finger Print</p>
+              <input
+                type='file'
+                accept='image/*'
+                onChange={(e) => handleImageChange(e, 'fingerPrints')}
+              />
+              {/* Display the selected image */}
+              {formData.fingerPrints && (
+                <div className='inputImage'>
 
-            <div className='finger-capture'>
-              <ul>
-                <p>Finger Print</p>
-                <img src={Finger} alt='' />
-                {/* <input type='text' name='fingerPrints' onChange={handleInputChange} value={formData.fingerPrints} /> */}
-              </ul>
+                  <img src={URL.createObjectURL(formData.fingerPrints)} alt='' />
+                </div>
+              )}
+            </ul>
 
-              <ul>
-                <p>Capture</p>
-                <img src={Capture} alt='' />
-                {/* <input type='file' name='facialCapture' onChange={handleInputChange} value={formData.facialCapture} /> */}
-              </ul>
-            </div>
-          </ul>
+            {/* Capture */}
+            <ul className='biometric'>
+              <p>Capture</p>
+              <input
+                type='file'
+                accept='image/*'
+                onChange={(e) => handleImageChange(e, 'image')}
+              />
+              {/* Display the selected image */}
+              {formData.image && (
+                <div className="inputImage">
+                  
+                <img src={URL.createObjectURL(formData.image)} alt='' />
+                </div>
+              )}
+            </ul>
          
         </div>
 
