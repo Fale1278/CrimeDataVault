@@ -6,7 +6,7 @@ import { useLocation, Link } from 'react-router-dom';
 
 const Navbar = () => {
   const location = useLocation();
-  const policeProfile = location.pathname === '/policeProfile';
+  const policeProfile = location.pathname === '../';
   const criminalProfile = location.pathname === '/criminalProfile';
   const visitorProfile = location.pathname === '/visitorProfile';
 
@@ -50,12 +50,7 @@ const Navbar = () => {
           ))}
         </div>
       )} */}
-      {!policeProfile && !criminalProfile && !visitorProfile && (
-        <ul className='search'>
-          <AiOutlineSearch style={{ fontSize: '22px' }} />
-          <input type="text" placeholder='Search' />
-        </ul>
-      )}
+
       <ul className='officer2'>
         <span>Officer</span> <img src={Officer2} alt="" />
       </ul>

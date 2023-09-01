@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import Leo from '../../../assets/leo.png';
 import Contact from '../../../assets/contact.svg';
 import Finger from '../../../assets/fingerprint.png';
-import PreLoader from '../PreLoader/PreLoader';
+import PreLoader from '../../../User/Pages/PreLoader/PreLoader';
 
 const CriminalProfile = () => {
   const [isLoading, setIsLoading] = useState(true)
