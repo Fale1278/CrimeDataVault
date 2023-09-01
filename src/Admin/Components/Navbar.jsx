@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Officer2 from '../../assets/officer2.png';
-import { AiOutlineSearch } from 'react-icons/ai';
 import { FaBell } from 'react-icons/fa';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const location = useLocation();
-  const policeProfile = location.pathname === '../';
-  const criminalProfile = location.pathname === '/criminalProfile';
-  const visitorProfile = location.pathname === '/visitorProfile';
 
   const [updateRequests, setUpdateRequests] = useState([]);
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);

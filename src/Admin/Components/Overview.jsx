@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import Arrow from '../../assets/arrow.png'
 
+import Chart from './Chart'
 
 
 
@@ -76,7 +77,7 @@ const Overview = () => {
 
   const fetchOfficersAtStation = async () => {
     try{
-      const response = await fetch ('')
+      const response = await fetch ('https://crime-xrrp.onrender.com/admin/officers')
       if(response.ok){
         const data = await response.json();
         return data
@@ -152,6 +153,9 @@ const Overview = () => {
         </div>
 
       </div>
+      <div className='chart-container'>
+      <Chart crimeCategories={Array.from(crimeCategories)} />
+    </div>
       
       <p className='chart-p'>Crime Category Rate based on Criminal Record at Anglo Jos Station</p>
     </div>

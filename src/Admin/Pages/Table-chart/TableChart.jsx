@@ -1,7 +1,7 @@
-import React from 'react'
-import Chart from '../../Components/Chart'
-import Table from '../../Components/Table'
-import Overview from '../../Components/Overview'
+import React from 'react';
+import Chart from '../../Components/Chart';
+import Table from '../../Components/Table';
+import Overview from '../../Components/Overview';
 
 const Home = () => {
   return (
@@ -12,7 +12,7 @@ const Home = () => {
         <Table />
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
