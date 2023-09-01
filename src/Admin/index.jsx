@@ -15,6 +15,7 @@ import RegisterPolice from '../Admin/Pages/Register-Police/RegisterPolice'
 import PoliceProfile from '../User/Pages/police-profile/Police-Profile'
 import CrimeCategory from '../Admin/Pages/crime-categories/Crime-Categories'
 import Notification from '../Admin/Pages/Notifications/Notification'
+import VisitorProfile from '../Admin/Pages/visitor-profile/Visitor-Profile'
 
 const index = () => {
   const containerStyle = {
@@ -32,11 +33,13 @@ const index = () => {
           <Route path='/' element={<TableChart />}/>
             <Route path='/adminNotification' element={<Notification />}/>
             <Route path='/viewCriminal' element={<ViewCriminal />} />
-            <Route path='/criminalProfile' element={<CriminalProfile />} />
+            <Route path='/criminalProfile/:_id' element={<CriminalProfile />} />
             <Route path='/viewVisitor' element={<ViewVisitor />} />
+            
+            <Route path='visitorProfile/:_id' element={<VisitorProfile />} />
             <Route path='/policeRecord' element={<PoliceRecord />} />
             <Route path='/registerPolice' element={<RegisterPolice />} />
-            <Route path='/policeProfile/:ID' element={<PoliceProfile />} />
+            <Route path='/policeProfile/:_id' element={<PoliceProfile />} />
             <Route path='/assignPolice' element={<AssignPolice />} />
             <Route path='/crimeCategories' element={<CrimeCategory />} />
         </Routes> 

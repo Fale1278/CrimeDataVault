@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const AddPolice = () => { 
-  const initialFormData = {
+  const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     middleName: '',
@@ -30,9 +30,8 @@ const AddPolice = () => {
     policeId: '',
     fingerPrints: null,
     image: null,
-  };
+  });
 
-  const [formData, setFormData] = useState({ ...initialFormData });
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
@@ -72,13 +71,11 @@ const AddPolice = () => {
 
       const response = await fetch('https://crime-xrrp.onrender.com/admin/officerSignup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: form,
       });
 
       const data = await response.json();
+      console.log('API Response:', data)
       return data;
     } catch (error) {
       throw error;
@@ -90,13 +87,46 @@ const AddPolice = () => {
 
     try {
       const data = await postFormData();
-
-      if (data && data.message === 'Record added successfully') {
-        console.log('Data posted successfully:', data);
+      
+      if(data) {
+        console.log('Data Posted Successfully:', data)
         setSuccessPopupOpen(true);
         setErrorPopupOpen(false);
-        setFormData({ ...initialFormData }); // Reset the form after successful submission
-      } else {
+
+        setFormData({
+          ...formData,
+          firstName: '',
+          lastName: '',
+          middleName: '',
+          age: '',
+          maritalStatus: '',
+          email: '',
+          contactLine: '',
+          address :'',
+          DOB: '',
+          gender: '',
+          lga: '',
+          town: '',
+          state: '',
+          nationality: '',
+          height: '',
+          weight: '',
+          eyeColor: '',
+          bloodGroup: '',
+          haircolor: '',
+          nextOfKin: '',
+          nextOfKinContact: '',
+          nextOfKinAddress: '',
+          rank: '',
+          appointmentDate: '',
+          currentStation: '',
+          policeId: '',
+          fingerPrints: null,
+          image: null,
+        })
+
+        console.log(setFormData);
+      }else {
         setErrorPopupOpen(true);
         setSuccessPopupOpen(false);
       }

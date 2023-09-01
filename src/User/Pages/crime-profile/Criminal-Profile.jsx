@@ -22,7 +22,7 @@ const CriminalProfile = () => {
     // Fetch the criminal record for the specific id from the backend API
     const fetchCriminalRecord = async () => {
       try {
-        const response = await fetch(`https://crime-xrrp.onrender.com/officers/${_id}`);
+        const response = await fetch(`https://crime-xrrp.onrender.com/officers/criminal/${_id}`);
         if (response.ok) {
           const data = await response.json();
           setCriminalRecord(data);

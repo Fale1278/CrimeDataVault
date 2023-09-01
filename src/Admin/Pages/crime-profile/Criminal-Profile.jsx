@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Leo from '../../../assets/leo.png';
 import Contact from '../../../assets/contact.svg';
 import Finger from '../../../assets/fingerprint.png';
-import PreLoader from '../../../User/Pages/PreLoader/PreLoader';
+import PreLoader from '../PreLoader/PreLoader';
 
 const CriminalProfile = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [criminalRecord, setCriminalRecord] = useState(true);
+  const [criminalRecord, setCriminalRecord] = useState(null);
   const { _id } = useParams();
 
   useEffect(()=> {
@@ -21,7 +22,7 @@ const CriminalProfile = () => {
     // Fetch the criminal record for the specific id from the backend API
     const fetchCriminalRecord = async () => {
       try {
-        const response = await fetch(`https://crime-xrrp.onrender.com/officers/${_id}`);
+        const response = await fetch(`https://crime-xrrp.onrender.com/officers/criminal/${_id}`);
         if (response.ok) {
           const data = await response.json();
           setCriminalRecord(data);

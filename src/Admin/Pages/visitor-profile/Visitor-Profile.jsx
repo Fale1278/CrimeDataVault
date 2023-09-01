@@ -1,84 +1,121 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Police2 from '../../../assets/police2.png'
-import Jesse from '../../../assets/jesse.png'
 import Contact from '../../../assets/contact.svg'
-import Finger from '../../../assets/fingerprint.png'
 
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const VisitorProfile = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [visitorRecord, setVisitorRecord] = useState(true)
+  const { _id } = useParams()
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 2000)
+  },[])
+
+  useEffect(() =>{
+    const fetchVistitorRecord = async () =>{
+      try{
+        const response = await fetch (`https://crime-xrrp.onrender.com/officers/visitor/${_id}`)
+        if(response.ok){
+          const data = await response.json()
+          setVisitorRecord(data)
+        }else{
+          console.error('Error fetching visitor record',
+          response.status)
+        }
+      }catch (error){
+        console.error('Error fetching criminal record:', error)
+      }
+    }
+    fetchVistitorRecord()
+  },[])
+
+  if(!visitorRecord){
+    return <div style={{marginRight: '18rem'}}>Loading...</div>
+  }
+
   return (
     <div className='police-profile'>
-      <div className='pol'>
-        <div>
-          <img src={Police2} alt="" /><span>Visitor Details</span>
-        </div>
+      <div>
+        {isLoading? (
+          <PreLoader2 />
+        ): (
+          <div>
+            <div className='pol'>
+              <div>
+                <img src={Police2} alt="" /><span>Visitor Details</span>
+              </div>
 
-        <div className='back'><Link to='/viewVisitor' className='back'><i class='bx bx-left-arrow-alt'></i>Back</Link></div>
-      </div>
-
-      <div className="police-details-container">
-        <div className="police-details">
-          <div className="police-details-box">
-            <div className="kiri-kiri">
-              <h1>Jesse Kanadi</h1>
+              <div className='back'><Link to='/viewVisitor' className='back'><i class='bx bx-left-arrow-alt'></i>Back</Link></div>
             </div>
-            <div className="external">
-              <img src={Jesse} alt="" />
+
+            <div key={visitorRecord.id}className="police-details-container">
+              <div className="police-details">
+                <div className="police-details-box">
+                  <div className="kiri-kiri">
+                    <span>{visitorRecord.correctionalCenter}</span>
+                    <h1>{visitorRecord.name}</h1>
+                  </div>
+                  <div className="external">
+                    <img src={visitorRecord.image} alt="" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="police-details2">
+                <div className="police-details2-box">
+                  <h1><i class='bx bxs-user'></i><span>Personal Details</span></h1>
+                </div>
+
+                <div className="external2">
+                  <p><b>First Name: </b>{visitorRecord.fistname}</p>
+                  <p><b>Middle Name: </b>{visitorRecord.middlename}</p>
+                  <p><b>Last Name: </b> {visitorRecord.lastname}</p>
+                  <p><b>Age: </b> {visitorRecord.Age}</p>
+                  <p><b>Sex: </b>{visitorRecord.gender}</p>
+                  <p><b>Nationality: </b> {visitorRecord.Nationality}</p>
+                  <p><b>State: </b> {visitorRecord.state}</p>
+                  <p><b>LGA: </b> {visitorRecord.LGA}</p>
+                  <p><b>Blood Group: </b> {visitorRecord.bloodGroup}</p>
+                  <p><b>Height: </b> {visitorRecord.height}</p>
+                  <p><b>Marital Status: </b> {visitorRecord.maritalStatus}</p>
+                </div>
+              </div>
+
+              <div className="police-details2">
+                <div className="police-details2-box">
+                  <h1><img src={Contact} alt="" /><span>Contact Details</span></h1>
+                </div>
+
+                <div className="external2">
+                  <p><b>Contact Line: {visitorRecord.contactLine}</b></p>
+                  <p><b>Address: </b> {visitorRecord.visitorAddress}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="police-details2">
-          <div className="police-details2-box">
-            <h1><i class='bx bxs-user'></i><span>Personal Details</span></h1>
+            <button className='update'>
+              <Link to='/updateVisitor' className='link'>Update Record</Link>
+            </button>
           </div>
-
-          <div className="external2">
-            <p><b>First Name: </b> Jesse</p>
-            <p><b>Middle Name: </b>Jesse</p>
-            <p><b>Last Name: </b> Kanadi</p>
-            <p><b>Age: </b> 21</p>
-            <p><b>Sex: </b> Male</p>
-            <p><b>Nationality: </b> Nigerian</p>
-            <p><b>State: </b> Borno</p>
-            <p><b>LGA: </b> Hawul</p>
-            <p><b>Blood Group: </b> B+</p>
-            <p><b>Height: </b> 178 CM</p>
-            <p><b>Rank: </b> Sergeant</p>
-            <p><b>Marital Status: </b> Single</p>
-            <p><b>Address: </b> GGSS</p>
-          </div>
-        </div>
-
-        <div className="police-details2">
-          <div className="police-details2-box">
-            <h1><img src={Contact} alt="" /><span>Contact Details</span></h1>
-          </div>
-
-          <div className="external2">
-            <p><b>Contact Line: </b> 09123173100</p>
-            <p><b>Address: </b> Behind Toro Government Secondary School Toro</p>
-            <p><b>Next of Kin: </b> Musa Gyang</p>
-          </div>
-        </div>
-
-        <div className="police-details2">
-          <div className="police-details2-box">
-            <h1><img src={Finger} alt="" /><span>Work Details</span></h1>
-          </div>
-
-          <div className="external2">
-            <p><b>Police ID: </b> NPF123456</p>
-            <p><b>Appointment Date: </b>10-02-2022</p>
-            <p><b>Current Station: </b> Anglo Jos Station</p>
-          </div>
-        </div> 
+        )}
       </div>
+    </div>
+  )
+}
 
-      <button className='update'>
-        <Link to='/updateVisitor' className='link'>Update Record</Link>
-      </button>
+
+const PreLoader2 = () => {
+  return (
+    <div className='preLoader2'>
+      <div className="dot-container2">
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+        <div className="dot2"></div>
+      </div>
     </div>
   )
 }
