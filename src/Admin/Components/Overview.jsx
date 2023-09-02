@@ -141,8 +141,8 @@ const Overview = () => {
         <div className="overview-box">
           <h1>{officersAtStation.length}</h1>
           <h3>Officers</h3>
-          <Link href='#' className='info'><span>More info</span> <img src={Arrow} alt="" /></Link>
         </div>
+          <Link href='#' className='info'><span>More info</span> <img src={Arrow} alt="" /></Link>
 
         <div className="overview-box">
           <h1>{crimeCategories.size}</h1>
@@ -154,10 +154,10 @@ const Overview = () => {
 
       </div>
       <div className='chart-container'>
-      <Chart crimeCategories={Array.from(crimeCategories)} />
     </div>
       
       <p className='chart-p'>Crime Category Rate based on Criminal Record at Anglo Jos Station</p>
+      <Chart crimeCategories ={Array.from(crimeCategories)} criminalsInCustody={criminalsInCustody}/>
     </div>
   )
 }
