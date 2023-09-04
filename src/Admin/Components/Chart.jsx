@@ -16,7 +16,8 @@ const Chart = ({ crimeCategories, criminalsInCustody }) => {
 
   const totalCrimes = Object.values(crimeCategoryCounts).reduce((total, count) => total + count, 0);
 
-  const data = Object.entries(crimeCategoryCounts).map(([category, count]) => ({
+  const data = Object.entries(crimeCategoryCounts).map(([category, count]) => (
+    {
     value: (count / totalCrimes) * 100,
     title: category,
     color: getRandomColor(),
@@ -31,7 +32,7 @@ const Chart = ({ crimeCategories, criminalsInCustody }) => {
           label={({ dataEntry }) => `${dataEntry.value.toFixed(2)}% ${dataEntry.title}`}
           labelPosition={50}
           labelStyle={{
-            fontSize: '4px',
+            fontSize: '1px',
             fontFamily: 'sans-serif',
             fill: 'white',
           }}
