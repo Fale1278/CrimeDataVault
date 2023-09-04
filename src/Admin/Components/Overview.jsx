@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Arrow from '../../assets/arrow.png'
 
 import Chart from './Chart'
+import Table from './Table'
 
 
 
@@ -19,7 +20,7 @@ const Overview = () => {
 
   const fetchCriminalsInCustody = async () => {
     try {
-      const response = await fetch('https://crime-xrrp.onrender.com/officers/criminals');
+      const response = await fetch('https://crime-llpq.onrender.com/officers/criminals');
       if (response.ok) {
         const data = await response.json();
         return data;
@@ -48,7 +49,7 @@ const Overview = () => {
 
   const fetchVisitorsVisted = async () => {
     try {
-      const response = await fetch('https://crime-xrrp.onrender.com/officers/visitors');
+      const response = await fetch('https://crime-llpq.onrender.com/officers/visitors');
       if (response.ok) {
         const data = await response.json();
         return data;
@@ -77,7 +78,7 @@ const Overview = () => {
 
   const fetchOfficersAtStation = async () => {
     try{
-      const response = await fetch ('https://crime-xrrp.onrender.com/admin/officers')
+      const response = await fetch ('https://crime-llpq.onrender.com/admin/officers')
       if(response.ok){
         const data = await response.json();
         return data
@@ -141,8 +142,8 @@ const Overview = () => {
         <div className="overview-box">
           <h1>{officersAtStation.length}</h1>
           <h3>Officers</h3>
-        </div>
           <Link href='#' className='info'><span>More info</span> <img src={Arrow} alt="" /></Link>
+        </div>
 
         <div className="overview-box">
           <h1>{crimeCategories.size}</h1>
@@ -157,7 +158,13 @@ const Overview = () => {
     </div>
       
       <p className='chart-p'>Crime Category Rate based on Criminal Record at Anglo Jos Station</p>
+    
+      <div className="chart-table">
       <Chart crimeCategories ={Array.from(crimeCategories)} criminalsInCustody={criminalsInCustody}/>
+
+      
+<Table />
+      </div>
     </div>
   )
 }

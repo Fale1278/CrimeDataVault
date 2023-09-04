@@ -8,8 +8,7 @@ const Home = () => {
     <div>
       <Overview />
       <div className="chart-table">
-        <Chart />
-        <Table />
+        {/* <Chart /> */}
       </div>
     </div>
   );

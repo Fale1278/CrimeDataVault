@@ -31,7 +31,7 @@ const Chart = ({ crimeCategories, criminalsInCustody }) => {
           label={({ dataEntry }) => `${dataEntry.value.toFixed(2)}% ${dataEntry.title}`}
           labelPosition={50}
           labelStyle={{
-            fontSize: '10px',
+            fontSize: '4px',
             fontFamily: 'sans-serif',
             fill: 'white',
           }}
