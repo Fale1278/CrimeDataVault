@@ -13,7 +13,7 @@ const PoliceRecords = () => {
     // Fetch the police records from the backend API
     const fetchPoliceRecords = async () => {
       try {
-        const response = await fetch('https://crime-xrrp.onrender.com/admin/officers');
+        const response = await fetch('https://crime-llpq.onrender.com/admin/officers');
         if (response.ok) {
           const data = await response.json();
           setPoliceRecords(data);

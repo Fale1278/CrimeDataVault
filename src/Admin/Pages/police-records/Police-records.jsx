@@ -107,7 +107,7 @@ const PoliceRecords = () => {
         <span><i className='bx bx-skip-previous'></i></span> <span>Prev | Next </span> <span><i className='bx bx-skip-next'></i></span>
       </p>
     </div>
-  );policeId_1
+  );
 };
 
 export default PoliceRecords;

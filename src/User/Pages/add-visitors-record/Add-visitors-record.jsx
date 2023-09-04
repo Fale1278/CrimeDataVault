@@ -67,7 +67,7 @@ const AddVisitor = () => {
           form.append(key, formData[key]);
         }
       }
-      const response = await fetch ('https://crime-xrrp.onrender.com/officers/addVisitor', {
+      const response = await fetch ('https://crime-llpq.onrender.com/officers/addVisitor', {
         method: 'POST',
         body:form,
       });

@@ -14,7 +14,7 @@ const PoliceProfile = () => {
     // Fetch the police officer's details for the specific ID from the backend API
     const fetchPoliceOfficerDetails = async () => {
       try {
-        const response = await fetch(`https://crime-xrrp.onrender.com/admin/officer/${_id}`);
+        const response = await fetch(`https://crime-llpq.onrender.com/admin/officer/${_id}`);
         if (response.ok) {
           const data = await response.json();
           setPoliceOfficer(data);
