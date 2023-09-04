@@ -18,7 +18,7 @@ const VisitorProfile = () => {
   useEffect(() =>{
     const fetchVistitorRecord = async () =>{
       try{
-        const response = await fetch (`https://crime-xrrp.onrender.com/officers/visitor/${_id}`)
+        const response = await fetch (`https://crime-llpq.onrender.com/officers/visitor/${_id}`)
         if(response.ok){
           const data = await response.json()
           setVisitorRecord(data)
