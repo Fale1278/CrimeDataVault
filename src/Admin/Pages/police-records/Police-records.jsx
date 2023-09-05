@@ -8,6 +8,7 @@ const PoliceRecords = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [policeRecords, setPoliceRecords] = useState([]);
   const [filteredPoliceRecords, setFilteredPoliceRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
 
   useEffect(() => {
     // Fetch the police records from the backend API
@@ -17,6 +18,7 @@ const PoliceRecords = () => {
         if (response.ok) {
           const data = await response.json();
           setPoliceRecords(data);
+          setIsLoading(false)
         } else {
           console.error('Error fetching police records:', response.status);
         }
@@ -28,12 +30,11 @@ const PoliceRecords = () => {
   }, []);
 
   useEffect(() => {
-    // Filter the police records based on the search query
-    const filteredRecords = policeRecords.filter(
-      (record) =>
-        record.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.rank.toLowerCase().includes(searchQuery.toLowerCase())
+    // Filter the criminal records based on the search query
+    const filteredRecords = policeRecords.filter((record) =>
+      (record.firstname && record.firstname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (record.lastname && record.lastname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (record.rank && record.rank.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredPoliceRecords(filteredRecords);
   }, [searchQuery, policeRecords]);
@@ -42,6 +43,7 @@ const PoliceRecords = () => {
     const query = e.target.value;
     setSearchQuery(query);
   };
+
 
   return (
     <div className='view-record'>
@@ -89,7 +91,11 @@ const PoliceRecords = () => {
         </thead>
 
         <tbody>
-          {filteredPoliceRecords.map((record) => (
+          {isLoading ?(
+            <tr>
+              <td colSpan="10">Loading...</td>
+            </tr>
+          ):(filteredPoliceRecords.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
@@ -99,7 +105,8 @@ const PoliceRecords = () => {
               <td>{record.appointmentDate}</td>
               <td><Link to={`/policeProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
             </tr>
-          ))}
+          ))
+          )}
         </tbody>
       </table>
 

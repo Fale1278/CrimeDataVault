@@ -5,10 +5,18 @@ import { Link, useParams } from 'react-router-dom';
 import Police2 from '../../../assets/police2.png';
 import Contact from '../../../assets/contact.svg';
 import Finger from '../../../assets/fingerprint.png';
+import PreLoader from '../PreLoader/PreLoader';
 
 const PoliceProfile = () => {
-  const [policeOfficer, setPoliceOfficer] = useState(true);
+  const [policeOfficer, setPoliceOfficer] = useState(null);
+  const [isLoading, setIsLoading] = useState(true)
   const { _id } = useParams();
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    },3000)
+  },[])
 
   useEffect(() => {
     // Fetch the police officer's details for the specific ID from the backend API
@@ -34,7 +42,12 @@ const PoliceProfile = () => {
 
   return (
     <div className='police-profile'>
-      <div className='pol'>
+     <div>
+     {isLoading ?(
+      <PreLoader />
+     ): (
+      <div>
+         <div className='pol'>
         <div>
           <img src={Police2} alt="" /><span>Police Details</span>
         </div>
@@ -108,6 +121,9 @@ const PoliceProfile = () => {
           </div>
         </div> 
       </div>
+      </div>
+     )}
+     </div>
     </div>
   );
 };
