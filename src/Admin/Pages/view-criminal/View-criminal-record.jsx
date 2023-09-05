@@ -9,7 +9,9 @@ const ViewCriminal = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [criminalRecords, setCriminalRecords] = useState([]);
   const [filteredCriminalRecords, setFilteredCriminalRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
 
+ 
   useEffect(() => {
     // Fetch the criminal records from the backend API
     const fetchCriminalRecords = async () => {
@@ -18,6 +20,7 @@ const ViewCriminal = () => {
         if (response.ok) {
           const data = await response.json();
           setCriminalRecords(data);
+          setIsLoading(false); // Data loading complete
         } else {
           console.error('Error fetching criminal records:', response.status);
         }
@@ -28,13 +31,13 @@ const ViewCriminal = () => {
     fetchCriminalRecords();
   }, []);
 
+
   useEffect(() => {
     // Filter the criminal records based on the search query
-    const filteredRecords = criminalRecords.filter(
-      (record) =>
-        record.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.lastname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.crime.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredRecords = criminalRecords.filter((record) =>
+      (record.firstname && record.firstname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (record.lastname && record.lastname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (record.crime && record.crime.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredCriminalRecords(filteredRecords);
   }, [searchQuery, criminalRecords]);
@@ -45,6 +48,7 @@ const ViewCriminal = () => {
   };
 
 
+
   return (
     <div className='view-record'>
       <div className="view-records-container">
@@ -52,8 +56,8 @@ const ViewCriminal = () => {
           <p><img src={Finger} alt="" /><span>Criminal Records</span></p>
           <p>Show 
             <select name="" id="">
-              <option value="">0</option>78
-              <option value="1">1</option>66
+              <option value="">0</option>
+              <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
@@ -78,38 +82,44 @@ const ViewCriminal = () => {
       </div>
 
       <table>
-        <thead className='thead'>
-          <tr>
-            <th >ID</th>
-            <th>IMAGE</th>
-            <th>FIRST NAME</th>
-            <th>LAST NAME</th>
-            <th>GENDER</th>
-            <th>CRIME</th>
-            <th>CRIME DATE</th>
-            <th>STATUS</th>
-            <th>VIEW</th>
-            <th>SENTENCE</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {filteredCriminalRecords.length > -1 ? filteredCriminalRecords.map((record) => (
-            <tr key={record.ID}>
-              <td>{record.ID}</td>
-              <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
-              <td>{record.firstname}</td>
-              <td>{record.lastname}</td>
-              <td>{record.gender}</td>
-              <td>{record.crime}</td>
-              <td>{record.dateCommitted}</td>
-              <td>{record.status}</td>
-              <td><Link to={`/criminalProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
-              <td>{record.sentence}</td>
+          <thead className='thead'>
+            <tr>
+              <th >ID</th>
+              <th>IMAGE</th>
+              <th>FIRST NAME</th>
+              <th>LAST NAME</th>
+              <th>GENDER</th>
+              <th>CRIME</th>
+              <th>CRIME DATE</th>
+              <th>STATUS</th>
+              <th>VIEW</th>
+              <th>SENTENCE</th>
             </tr>
-          )): <PreLoader2 />}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {isLoading ? (
+              <tr>
+                <td colSpan="10">Loading...</td>
+              </tr>
+            ) : (
+              filteredCriminalRecords.map((record) => (
+                <tr key={record.ID}>
+                  <td>{record.ID}</td>
+                  <td><img src={record.image} alt="" style={{ width: '2rem', paddingTop: '2px' }} /></td>
+                  <td>{record.firstname}</td>
+                  <td>{record.lastname}</td>
+                  <td>{record.gender}</td>
+                  <td>{record.crime}</td>
+                  <td>{record.dateCommitted}</td>
+                  <td>{record.status}</td>
+                  <td><Link to={`/criminalProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
+                  <td>{record.sentence}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
 
       <p className='skip'>
         <span><i className='bx bx-skip-previous'></i></span> <span>Prev | Next </span> <span><i className='bx bx-skip-next'></i></span>
@@ -118,16 +128,5 @@ const ViewCriminal = () => {
   );
 };
 
-const PreLoader2 = () => {
-  return (
-    <div className='preLoader2'>
-      <div className="dot-container2">
-        <div className="dot2"></div>
-        <div className="dot2"></div>
-        <div className="dot2"></div>
-      </div>
-    </div>
-  )
-}
 
 export default ViewCriminal;

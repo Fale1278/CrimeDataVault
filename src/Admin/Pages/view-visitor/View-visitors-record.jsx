@@ -15,20 +15,16 @@ const ViewVisitors = () => {
   const [filteredVisitorRecord, setFilteredVisitorRecord] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    setTimeout(()=>{
-      setIsLoading(false)
-    }, 2000)
-  },[])    
 
   useEffect(() => {
     // Fetch the criminal records from the backend API
-    const fetchCriminalRecords = async () => {
+    const fetchVisitorRecords = async () => {
       try {
         const response = await fetch('https://crime-llpq.onrender.com/officers/visitors'); // Replace with your API endpoint
         if (response.ok) {
           const data = await response.json();
           setVisitorRecord(data);
+          setIsLoading(false)
         } else {
           console.error('Error fetching criminal records:', response.status);
         }
@@ -36,15 +32,14 @@ const ViewVisitors = () => {
         console.error('Error fetching criminal records:', error);
       }
     };
-    fetchCriminalRecords();
+    fetchVisitorRecords();
   }, []);
 
   useEffect(() => {
     // Filter the criminal records based on the search query
-    const filteredRecords = visitorRecords.filter(
-      (record) =>
-        record.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.lastname.toLowerCase().includes(searchQuery.toLowerCase()) 
+    const filteredRecords = visitorRecords.filter((record) =>
+      (record.firstname && record.firstname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (record.lastname && record.lastname.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredVisitorRecord(filteredRecords);
   }, [searchQuery, visitorRecords]);
@@ -56,11 +51,7 @@ const ViewVisitors = () => {
 
   return (
     <div className='view-record'>
-      {isLoading ? (
-        <PreLoader />
-      ): (
-        <div>
-          <div className="view-records-container">
+       <div className="view-records-container">
         <div className="entries">
           <p><img src={Visitor} alt="" /><span>Visitors Records</span></p>
           <p>Show 
@@ -103,7 +94,11 @@ const ViewVisitors = () => {
         </thead>
 
         <tbody>
-        {filteredVisitorRecord.length > -1 ?  filteredVisitorRecord.map((record) => (
+          {isLoading ?(
+            <tr>
+              <td colSpan="10">Loading...</td>
+            </tr>
+            ):(filteredVisitorRecord.map((record) => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td><img src={record.image} alt="" style={{width: '2rem'}}/></td>
@@ -114,15 +109,15 @@ const ViewVisitors = () => {
               <td>{record.relationshipWithInmate}</td>
               <td><Link to={`/visitorProfile/${record._id}`}><img src={Eye2} alt="" /></Link></td>
             </tr>
-          )): <PreLoader />}
+          ))
+          )}
         </tbody>
       </table>
 
       <p className='skip'><span><i class='bx bx-skip-previous'></i></span> <span>Prev | Next </span> <span><i class='bx bx-skip-next'></i></span></p>
 
-        </div>
-      )}
-    </div>
+        
+  </div>
   )
 }
 
