@@ -65,9 +65,14 @@ const Sidebar = () => {
                 <li className='eyes'><img className='images' src={Plus} alt="" />New Police</li>
               </Link>
 
+              <Link to='/addStation' className="link">
+                <li className='eyes'><img className='images' src={Plus} alt="" />Add Station</li>
+              </Link>
+
               <Link to='/assignPolice' className="link">
                 <li className='eyes'><img className='images' src={Plus} alt="" />Assign to Station</li>
               </Link>
+
             </ul>
           )}
         </div>

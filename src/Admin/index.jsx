@@ -16,6 +16,7 @@ import PoliceProfile from '../User/Pages/police-profile/Police-Profile'
 import CrimeCategory from '../Admin/Pages/crime-categories/Crime-Categories'
 import Notification from '../Admin/Pages/Notifications/Notification'
 import VisitorProfile from '../Admin/Pages/visitor-profile/Visitor-Profile'
+import AddStation from './Pages/Add-Station/AddStation'
 
 const index = () => {
   const containerStyle = {
@@ -40,6 +41,7 @@ const index = () => {
             <Route path='/policeRecord' element={<PoliceRecord />} />
             <Route path='/registerPolice' element={<RegisterPolice />} />
             <Route path='/policeProfile/:_id' element={<PoliceProfile />} />
+            <Route path='/addStation' element={<AddStation />} />
             <Route path='/assignPolice' element={<AssignPolice />} />
             <Route path='/crimeCategories' element={<CrimeCategory />} />
         </Routes> 

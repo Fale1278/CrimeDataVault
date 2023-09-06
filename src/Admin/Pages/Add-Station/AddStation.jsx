@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-const AssignPolice = () => {
+const AddStation = () => {
   const [formData, setFormData] = useState({
-    officerID: '',
-    stationID: '',
-    password:'',
+    firstname: '',
+    lastname: '',
+    middlename: '',
+    password: '',
+    LGA: '',
+    rank: '',
+    assigningDate: '',
+    station: '',
+    image: null,
   });
 
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -14,9 +20,14 @@ const AssignPolice = () => {
 
   // State to hold validation errors for each field
   const [formErrors, setFormErrors] = useState({
-    officerID: '',
-    stationID: '',
-    password:'',
+    firstname: '',
+    lastname: '',
+    middlename: '',
+    password: '',
+    LGA: '',
+    rank: '',
+    assigningDate: '',
+    station: '',
   });
 
   useEffect(() => {
@@ -39,23 +50,43 @@ const AssignPolice = () => {
     }));
   };
 
+  const handleImageChange = (e, type) => {
+    const selectedImage = e.target.files[0];
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [type]: selectedImage,
+    }));
+  };
+
   const validateForm = () => {
     let valid = true;
     const errors = {};
 
     // Validation logic for each field
-    if (!formData.stationID.trim()) {
-      errors.stationID = 'Fill out the Station ID';
+    if (!formData.firstname.trim()) {
+      errors.firstname = 'First Name cannot be empty';
       valid = false;
     }
 
-    if (!formData.officerID.trim()) {
-      errors.officerID = 'Fill out Officer ID';
+    if (!formData.lastname.trim()) {
+      errors.lastname = 'Last Name cannot be empty';
       valid = false;
     }
 
-    if (!formData.password.trim()) {
-      errors.password = 'Fill out Password';
+    if (!formData.middlename.trim()) {
+      errors.middlename = 'Middle Name cannot be empty';
+      valid = false;
+    }
+
+    if (!formData.LGA.trim()) {
+      errors.LGA = 'This field cannot be either';
+      valid = false;
+    }
+
+
+
+    if (!formData.rank.trim()) {
+      errors.rank = 'Rank Cannot be empty';
       valid = false;
     }
 
@@ -75,7 +106,7 @@ const AssignPolice = () => {
         }
       }
 
-      const response = await fetch('https://crime-llpq.onrender.com/admin/assign-station', {
+      const response = await fetch('https://crime-llpq.onrender.com/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,16 +133,27 @@ const AssignPolice = () => {
 
         // Reset the form after successful assignment
         setFormData({
-          officerID: '',
-          stationID: '',
-          password:'',
+          firstname: '',
+          lastname: '',
+          middlename: '',
+          password: '',
+          LGA: '',
+          rank: '',
+          assigningDate: '',
+          station: '',
+          image: '',
         });
 
         // Clear error messages
         setFormErrors({
-          officerID: '',
-          stationID: '',
-          password:'',
+          firstname: '',
+          lastname: '',
+          middlename: '',
+          password: '',
+          LGA: '',
+          rank: '',
+          assigningDate: '',
+          station: '',
         });
       } else {
         setErrorPopupOpen(true);
@@ -157,39 +199,110 @@ const AssignPolice = () => {
             <form className='add-container2' onSubmit={handleFormSubmit}>
               <div className='add-box2'>
                 <ul>
-                  <p>Station ID</p>
+                  <p>First Name</p>
                   <input
                     type='text'
-                    name='stationID'
+                    name='firstname'
                     onChange={handleInputChange}
-                    value={formData.stationID}
+                    value={formData.firstname}
                   />
-                  {formErrors.stationID && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.stationID}</p>}
+                  {formErrors.firstname && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.firstname}</p>}
                 </ul>
 
                 <ul>
-                  <p>Offcer ID</p>
+                  <p>Middle Name</p>
                   <input
                     type='text'
-                    name='officerID'
+                    name='middlename'
                     onChange={handleInputChange}
-                    value={formData.officerID}
+                    value={formData.middlename}
                   />
-                  {formErrors.officerID && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.officerID}</p>}
+                  {formErrors.middlename && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.middlename}</p>}
                 </ul>
 
                 <ul>
-                  <p>Password</p>
+                  <p>Last Name</p>
                   <input
-                    type='password'
-                    name='password'
+                    type='text'
+                    name='lastname'
                     onChange={handleInputChange}
-                    value={formData.password}
+                    value={formData.lastname}
                   />
-                  {formErrors.password && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.password}</p>}
+                  {formErrors.lastname && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.lastname}</p>}
                 </ul>
-              
+
+                <ul>
+                  <p>Officer Rank</p>
+                  <input
+                    type='text'
+                    name='rank'
+                    onChange={handleInputChange}
+                    value={formData.rank}
+                  />
+                  {formErrors.rank && <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.rank}</p>}
+                </ul>
+
+                <ul>
+                  <p>Assigning Date</p>
+                  <input
+                    type='date'
+                    name='assigningDate'
+                    onChange={handleInputChange}
+                    value={formData.assigningDate}
+                  />
+                  {formErrors.assigningDate && (
+                    <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.assigningDate}</p>
+                  )}
+                </ul>
+
+                <ul>
+                  <p>Assigning Date</p>
+                  <input
+                    type='date'
+                    name='assigningDate'
+                    onChange={handleInputChange}
+                    value={formData.LGA}
+                  />
+                  {formErrors.LGA && (
+                    <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.LGA}</p>
+                  )}
+                </ul>
+
+                <ul>
+
+                <ul>
+                  <p>Station</p>
+                  <input
+                    type='date'
+                    name='assigningDate'
+                    onChange={handleInputChange}
+                    value={formData.station}
+                  />
+                  {formErrors.station && (
+                    <p style={{fontStyle: 'italic', color: 'red'}} className='error'>{formErrors.station}</p>
+                  )}
+                </ul>
+
+
+
+                    {/* Capture */}
+                    <ul className='biometric'>
+                      <p>Capture</p>
+                      <input
+                        type='file'
+                        accept='image/*'
+                        onChange={(e) => handleImageChange(e, 'image')}
+                      />
+                      {/* Display the selected image */}
+                      {formData.image && (
+                        <div style={{width:'5rem', height: '5rem', borderRadius: '.5rem', marginLeft:'6rem', marginTop: '1rem'}}>
+                          
+                        <img style={{width: '100%', borderRadius:'.5rem'}} src={URL.createObjectURL(formData.image)} alt='' />
+                        </div>
+                      )}
+                    </ul>
                   <button type='submit' className='addBtn2' style={{marginLeft:'6rem'}}>Assign Officer</button>
+                  </ul>
               </div>
               {/* ...other form fields and submit button */}
             </form>
@@ -240,4 +353,4 @@ const PreLoader2 = () => {
   )
 }
 
-export default AssignPolice;
+export default AddStation;
